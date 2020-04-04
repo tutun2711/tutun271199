@@ -1,0 +1,148 @@
+Student Name: TUTUN MANDAL
+Student ID: 11801600 (A24)
+Email Address: tutunmandal2711@gmail.com
+
+Problem 
+Question 16:- Design a scheduler that can schedule the processes arriving system at periodical intervals. Every process is assigned with a fixed time slice t milliseconds. If it is not able to complete its execution within the assigned time quantum, then automated timer generates an interrupt. The scheduler will select the next process in the queue and dispatcher dispatches the process to processor for execution. Compute the total time for which processes were in the queue waiting for the processor. Take the input for CPU burst, arrival time and time quantum from the user.
+
+
+Considered the following units for reference.
+Process
+Arrival Time
+Burst Time
+P1
+0
+       7
+P2
+2
+4
+P3
+4
+1
+
+
+Answer: We can solve this question by using algorithms of Operating System:
+Round Robin Scheduling Algorithm : for fixed time slice i.e for X unit and Y unit of time.
+
+Algorithm:
+Step 1: Start the process
+Step 2: Accept the number of processes in the ready Queue along with arrival time and burst time.
+Step 3: For each process in the ready Q, assign the process with a time slice of X unit in first iteration.
+Step 4: For each process again assign the process with a time slice of Y unit in second iteration.
+Step 5: Assign Processes with least execution time i.e CPU is assigned to process with less CPU burst time.
+Step 6: Calculate
+
+
+Completion Time: Time at which process completes its execution.
+Turn Around Time: Time Difference between completion time and arrival time. Turn Around Time = Completion Time – Arrival Time
+Waiting Time(W.T): Time Difference between turn around time and burst time.
+Waiting Time = Turn Around Time – Burst Time
+
+
+
+Description:
+To implement the program we have to make 3 inputs.
+Number of processes.
+Arrival Time.
+Burst Time.
+
+
+
+
+
+Code:-
+
+// Header Files
+#include<stdio.h>
+
+// Main Function
+int main()
+{
+
+ int TS,TAT[10];
+ int n , i , j, numOfPs, p_id[10], waiting_Time[10], need[10];
+ int BT[10],flag[10],TTAT=0,TWT=0;
+ float AWT,ATAT;
+printf("=================================================\n\t ROUND ROBIN SCHEDULING ALGORITHM \n================================================="); 
+printf("\nEnter the number of process in CPU \n"); 
+ scanf("%d",&numOfPs);   // Taking input of number of process that run in cpu
+ n = numOfPs;
+ printf("\nEnter the Timeslice \n");
+ scanf("%d",&TS);  // Input of Timeslice
+ for(i=1;i <= numOfPs;i++)  // Loop for taking input of processes
+{
+printf("\n Enter the process ID for Process%d\n",i);
+scanf("%d",&p_id[i]);    // Input of Process Id
+printf("\n Enter the Burst Time for the process%d\n",i);
+scanf("%d",&BT[i]);  // Input of Burst Time of the process
+need[i] = BT[i];
+}
+for(i=1;i <= numOfPs;i++)
+{
+  flag[i]=1;
+  waiting_Time[i]=0;
+ }
+while(numOfPs != 0)
+ {
+   for(i=1;i <= numOfPs;i++)
+   {
+     if(need[i] >= TS)
+     {
+   for(j=1;j <= numOfPs;j++)
+       {
+    if((i != j) && (flag[i] == 1) && (need[j]!=0))
+    waiting_Time[j] += TS;
+       }
+ need[i] -= TS;
+ if(need[i]== 0)
+{
+flag[i]=0;
+numOfPs--;
+}
+}
+else
+{
+  for(j=1;j <= numOfPs;j++)
+      {
+    if((i != j) && (flag[i] == 1) && (need[j] != 0))
+    waiting_Time[j] += need[i];
+       }
+need[i]=0;
+numOfPs--;
+flag[i]=0;
+}
+ }
+}
+for(i=1;i <= n;i++)
+{
+TAT[i] = waiting_Time[i] + BT[i];
+TWT = TWT + waiting_Time[i];
+TTAT = TTAT + TAT[i];
+}
+AWT = (float)TWT/n;
+ATAT = (float)TTAT/n;
+
+// Final output after the calculating the values of Waiting  Time  and Turnaround Time
+
+printf("\n\n ROUND ROBIN SCHEDULING ALGORITHM \n\n");
+printf("\n\n Process \t Process ID  \t BurstTime \t Waiting Time \t TurnaroundTime \n ");
+for(i=1;i <= n;i++)
+{
+printf("\n %5d \t\t %5d \t\t %5d \t\t %5d \t\t %5d \n", i,p_id[i],BT[i],waiting_Time[i],TAT[i]);
+}
+printf("\n The average Waiting Time=4.2f",AWT);
+printf("\n The average Turn around Time=4.2f",ATAT);
+return 0;
+} 
+
+
+
+
+
+
+
+
+
+
+
+
